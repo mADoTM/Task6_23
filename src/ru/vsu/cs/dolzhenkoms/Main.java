@@ -5,11 +5,12 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        double pow = readPow();
+        double pow = readDouble("Pow");
+        double epsilon = readDouble("Epsilon");
 
         double sumOfSequence = getSumOfSequence(pow);
-        double sumOfSequenceMoreThanEpsilon = getSumOfSequenceMoreThanEpsilon(pow, Math.E);
-        double sumOfSequenceMoreThanEpsilonDividedBy10 = getSumOfSequenceMoreThanEpsilon(pow, Math.E / 10);
+        double sumOfSequenceMoreThanEpsilon = getSumOfSequenceMoreThanEpsilon(pow, epsilon);
+        double sumOfSequenceMoreThanEpsilonDividedBy10 = getSumOfSequenceMoreThanEpsilon(pow, epsilon / 10);
         double exactValue = getExactValueOfSequence(pow);
 
         printResult(sumOfSequence, sumOfSequenceMoreThanEpsilon, sumOfSequenceMoreThanEpsilonDividedBy10, exactValue);
@@ -30,11 +31,11 @@ public class Main {
         return sum;
     }
 
-    private static double getSumOfSequenceMoreThanEpsilon(double pow, double e) {
+    private static double getSumOfSequenceMoreThanEpsilon(double pow, double epsilon) {
         double term = 1; double sum = 0;
 
         for(int i = 0; i < pow; i++) {
-            if(term > e) {
+            if(term > epsilon) {
                 sum += term;
             }
             term *= Math.log(2)*pow/(i+1);
@@ -43,16 +44,18 @@ public class Main {
         return sum;
     }
 
-    private static double readPow() {
+    private static double readDouble(String text) {
         double value = 0;
         Scanner scn = new Scanner(System.in);
 
         try{
-            System.out.print("[SYSTEM] Enter value of Pow - ");
+            System.out.printf("[SYSTEM] Enter value of %s - ", text);
             value = scn.nextInt();
         }
         catch(Exception ex) {
-            System.out.println("[SYSTEM] Your entered value contains forbidden symbols. You must enter only integer number. Pow sets in default value (0)");
+            System.out.println("[SYSTEM] Your entered value contains forbidden symbols. You must enter only integer number.");
+            System.out.println("[SYSTEM] Please retry...");
+            return readDouble(text);
         }
 
         return value;
